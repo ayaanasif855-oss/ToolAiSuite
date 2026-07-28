@@ -1,0 +1,6 @@
+{
+  "name": "ToolAISuite",
+  "description": "100% Private, Browser-Based Client-Side PDF, Word Counter & QR Code Tools Suite. Zero server uploads.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
