@@ -189,11 +189,12 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
       } else if (tool.id === 'ocr-pdf') {
         const res = await ocrDocument(files[0], ocrLanguage, handleProgress);
         setSingleResult({
-          blob: res.docxBlob,
+          blob: res.pdfBlob,
+          pdfBlob: res.pdfBlob,
           docxBlob: res.docxBlob,
           txtBlob: res.txtBlob,
-          fileName: `${res.fileName}.docx`,
-          size: res.docxBlob.size,
+          fileName: `${res.fileName}.pdf`,
+          size: res.pdfBlob.size,
           text: res.text
         });
       }
