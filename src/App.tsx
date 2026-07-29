@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
@@ -113,49 +114,52 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans transition-colors">
-      {/* Navigation Header */}
-      <Header
-        currentRoute={currentRoute}
-        navigate={navigate}
-        openSearch={() => setSearchModalOpen(true)}
-      />
+    <ThemeProvider>
+      <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans transition-colors">
+        {/* Navigation Header */}
+        <Header
+          currentRoute={currentRoute}
+          navigate={navigate}
+          openSearch={() => setSearchModalOpen(true)}
+        />
 
-      {/* Main Page Content */}
-      <main className="flex-grow">{renderContent()}</main>
+        {/* Main Page Content */}
+        <main className="flex-grow">{renderContent()}</main>
 
-      {/* Global Search Modal Overlay */}
-      {searchModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-start justify-center pt-20 px-4 animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 w-full max-w-2xl shadow-2xl relative">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                <Search className="w-4 h-4" /> Quick Search PDF Tools
-              </span>
-              <button
-                onClick={() => setSearchModalOpen(false)}
-                className="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+        {/* Global Search Modal Overlay */}
+        {searchModalOpen && (
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-start justify-center pt-20 px-4 animate-in fade-in duration-200">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 w-full max-w-2xl shadow-2xl relative">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                  <Search className="w-4 h-4" /> Quick Search PDF Tools
+                </span>
+                <button
+                  onClick={() => setSearchModalOpen(false)}
+                  className="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-            <GlobalSearch
-              onSelectTool={(toolId) => {
-                navigate(`tool/${toolId}`);
-                setSearchModalOpen(false);
-              }}
-            />
+              <GlobalSearch
+                onSelectTool={(toolId) => {
+                  navigate(`tool/${toolId}`);
+                  setSearchModalOpen(false);
+                }}
+              />
 
-            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-400">
-              Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[10px]">ESC</kbd> to close
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-400">
+                Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[10px]">ESC</kbd> to close
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Footer */}
-      <Footer navigate={navigate} />
-    </div>
+        {/* Footer */}
+        <Footer navigate={navigate} />
+      </div>
+    </ThemeProvider>
   );
 }
+

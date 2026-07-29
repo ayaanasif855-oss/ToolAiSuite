@@ -13,6 +13,7 @@ export async function unlockPdf(
     onProgress?.(50, 'Removing password protections and encryption restrictions...');
     // Load with password if provided, or ignore encryption
     const pdfDoc = await PDFDocument.load(arrayBuffer, {
+      password: password || undefined,
       ignoreEncryption: true
     } as any);
 
