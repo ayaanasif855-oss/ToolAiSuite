@@ -10,9 +10,10 @@ import {
   Sparkles,
   Type,
   Upload,
-  AlignLeft
+  AlignLeft,
+  FileUp
 } from 'lucide-react';
-import { extractPdfText } from '../utils/pdf/pdfToWord';
+import { pdfjsLib, fileToArrayBuffer } from '../utils/pdf/pdfSetup';
 
 export const WordCounterTool: React.FC = () => {
   const [text, setText] = useState('');
@@ -20,6 +21,7 @@ export const WordCounterTool: React.FC = () => {
   const [ignoreStopWords, setIgnoreStopWords] = useState(true);
   const [isFileLoading, setIsFileLoading] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Common stop words to exclude from keyword density
   const STOP_WORDS = useMemo(
@@ -116,20 +118,30 @@ export const WordCounterTool: React.FC = () => {
     };
   }, [text, ignoreStopWords, STOP_WORDS]);
 
-  // Handle file import
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  // Handle file import and extraction
+  const processFile = async (file: File) => {
     setIsFileLoading(true);
     setFileName(file.name);
 
     try {
-      if (file.name.endsWith('.pdf')) {
-        const extracted = await extractPdfText(file);
-        setText(extracted);
+      if (file.name.toLowerCase().endsWith('.pdf') || file.type === 'application/pdf') {
+        const arrayBuffer = await fileToArrayBuffer(file);
+        const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let fullText = '';
+
+        for (let i = 1; i <= pdfDoc.numPages; i++) {
+          const page = await pdfDoc.getPage(i);
+          const textContent = await page.getTextContent();
+          const pageStr = textContent.items
+            .map((item) => ('str' in item ? item.str : ''))
+            .join(' ');
+
+          fullText += (fullText ? '\n\n' : '') + pageStr;
+        }
+
+        setText(fullText);
       } else {
-        // Plain text, markdown, docx plain read
+        // Plain text, markdown, or plain read
         const content = await file.text();
         setText(content);
       }
@@ -137,6 +149,32 @@ export const WordCounterTool: React.FC = () => {
       console.error('Failed to read file:', err);
     } finally {
       setIsFileLoading(false);
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      processFile(file);
     }
   };
 
@@ -302,16 +340,32 @@ export const WordCounterTool: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Textarea */}
-      <div className="relative">
+      {/* Main Textarea & Drag Drop Zone */}
+      <div
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={`relative rounded-2xl transition-all ${
+          isDragging
+            ? 'ring-4 ring-indigo-500/50 border-indigo-500 scale-[0.99]'
+            : ''
+        }`}
+      >
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Type or paste your text here, or upload a document file above..."
+          placeholder="Type or paste your text here, or drag & drop a PDF / TXT / DOCX file..."
           rows={12}
           className="w-full p-5 text-sm sm:text-base rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-sans leading-relaxed shadow-sm"
           id="word-counter-textarea"
         />
+
+        {isDragging && (
+          <div className="absolute inset-0 bg-indigo-600/10 backdrop-blur-xs rounded-2xl flex flex-col items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold border-2 border-dashed border-indigo-500 pointer-events-none">
+            <FileUp className="w-10 h-10 animate-bounce mb-2" />
+            <span className="text-base">Drop PDF or Document to Count Words</span>
+          </div>
+        )}
       </div>
 
       {/* Case Converter Toolset */}

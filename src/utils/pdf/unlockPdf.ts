@@ -11,14 +11,24 @@ export async function unlockPdf(
 
   try {
     onProgress?.(50, 'Removing password protections and encryption restrictions...');
-    // Load with password if provided, or ignore encryption
+    // 1. Load the encrypted file bytes with the user-provided password using pdf-lib
     const pdfDoc = await PDFDocument.load(arrayBuffer, {
       password: password || undefined,
-      ignoreEncryption: true
+      ignoreEncryption: false
     } as any);
 
-    onProgress?.(80, 'Re-saving clean unlocked PDF...');
-    const pdfBytes = await pdfDoc.save();
+    onProgress?.(70, 'Creating clean unencrypted document structure...');
+    // 2. Create a brand new, unencrypted PDFDocument
+    const unlockedDoc = await PDFDocument.create();
+
+    // 3. Copy all pages from the loaded document into the new document
+    const pageIndices = pdfDoc.getPageIndices();
+    const copiedPages = await unlockedDoc.copyPages(pdfDoc, pageIndices);
+    copiedPages.forEach((page) => unlockedDoc.addPage(page));
+
+    onProgress?.(90, 'Saving clean unlocked PDF file...');
+    // 4. Save the clean, new unlockedDoc bytes
+    const pdfBytes = await unlockedDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const baseName = file.name.replace(/\.[^/.]+$/, '');
     const fileName = `${baseName}_unlocked.pdf`;

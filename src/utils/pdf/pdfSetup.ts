@@ -1,8 +1,8 @@
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Set up worker for pdfjs-dist from a reliable CDN for pure client-side execution
+// Set up worker for pdfjs-dist from jsDelivr npm CDN matching the exact installed pdfjsLib.version
 if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version || '3.11.174'}/pdf.worker.min.js`;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version || '6.1.200'}/build/pdf.worker.min.mjs`;
 }
 
 export { pdfjsLib };
