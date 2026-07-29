@@ -6,29 +6,39 @@ export async function unlockPdf(
   password?: string,
   onProgress?: (progress: number, message: string) => void
 ): Promise<{ blob: Blob; fileName: string; size: number }> {
-  onProgress?.(20, 'Reading PDF document security structure...');
+  onProgress?.(15, 'Reading PDF document structure...');
   const arrayBuffer = await fileToArrayBuffer(file);
+  const trimmedPassword = password ? password.trim() : '';
+
+  onProgress?.(35, 'Authenticating and decrypting document...');
+  let pdfDoc: PDFDocument;
 
   try {
-    onProgress?.(50, 'Removing password protections and encryption restrictions...');
-    // 1. Load the encrypted file bytes with the user-provided password using pdf-lib
-    const pdfDoc = await PDFDocument.load(arrayBuffer, {
-      password: password || undefined,
+    // Attempt loading with user password or empty
+    pdfDoc = await PDFDocument.load(arrayBuffer, {
+      password: trimmedPassword || undefined,
       ignoreEncryption: false
     } as any);
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    if (!trimmedPassword) {
+      throw new Error('This PDF is password-protected. Please enter the password above and try again.');
+    }
+    throw new Error('Invalid password provided. Unable to decrypt this PDF. Please check your password and try again.');
+  }
 
-    onProgress?.(70, 'Creating clean unencrypted document structure...');
-    // 2. Create a brand new, unencrypted PDFDocument
-    const unlockedDoc = await PDFDocument.create();
+  try {
+    onProgress?.(65, 'Creating clean unencrypted PDF structure...');
+    // Create a brand-new unencrypted PDFDocument
+    const cleanDoc = await PDFDocument.create();
 
-    // 3. Copy all pages from the loaded document into the new document
+    // Copy all pages from decrypted PDF into the clean document
     const pageIndices = pdfDoc.getPageIndices();
-    const copiedPages = await unlockedDoc.copyPages(pdfDoc, pageIndices);
-    copiedPages.forEach((page) => unlockedDoc.addPage(page));
+    const copiedPages = await cleanDoc.copyPages(pdfDoc, pageIndices);
+    copiedPages.forEach((page) => cleanDoc.addPage(page));
 
-    onProgress?.(90, 'Saving clean unlocked PDF file...');
-    // 4. Save the clean, new unlockedDoc bytes
-    const pdfBytes = await unlockedDoc.save();
+    onProgress?.(90, 'Saving unlocked PDF file...');
+    const pdfBytes = await cleanDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const baseName = file.name.replace(/\.[^/.]+$/, '');
     const fileName = `${baseName}_unlocked.pdf`;
@@ -36,10 +46,8 @@ export async function unlockPdf(
     onProgress?.(100, 'PDF successfully unlocked!');
     return { blob, fileName, size: blob.size };
   } catch (err: unknown) {
-    const errorMsg = err instanceof Error ? err.message : 'Failed to unlock PDF';
-    if (errorMsg.toLowerCase().includes('password') || errorMsg.toLowerCase().includes('encrypted')) {
-      throw new Error('This PDF requires a valid password. Please enter the password above and try again.');
-    }
-    throw new Error(`Failed to unlock PDF: ${errorMsg}`);
+    const msg = err instanceof Error ? err.message : 'Unknown error';
+    throw new Error(`Failed to generate clean unlocked PDF: ${msg}`);
   }
 }
+

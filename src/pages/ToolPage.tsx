@@ -810,26 +810,27 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
                     </h4>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs font-mono bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <div className="flex items-center justify-between text-xs font-mono bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
                     <div>
-                      <span className="text-slate-400 block">File Size</span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200">
+                      <span className="text-slate-400 block text-[10px] uppercase font-bold">
+                        {singleResult.originalSize ? 'Compressed Size' : 'File Size'}
+                      </span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200 text-sm">
                         {formatBytes(singleResult.size)}
                       </span>
                     </div>
 
-                    {singleResult.originalSize && (
+                    {singleResult.originalSize ? (
                       <div className="text-right">
-                        <span className="text-slate-400 block">Savings</span>
-                        <span className="font-bold text-emerald-500">
-                          {Math.round(
-                            ((singleResult.originalSize - singleResult.size) / singleResult.originalSize) * 100
-                          )}
-                          % Reduced
+                        <span className="text-slate-400 block text-[10px] uppercase font-bold">Before vs After</span>
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400 text-sm">
+                          {formatBytes(singleResult.originalSize)} → {formatBytes(singleResult.size)}{' '}
+                          ({Math.max(0, Math.round(((singleResult.originalSize - singleResult.size) / singleResult.originalSize) * 100))}% Saved)
                         </span>
                       </div>
-                    )}
+                    ) : null}
                   </div>
+
 
                   {/* Extracted Text Inspector for Word / OCR */}
                   {singleResult.text && (

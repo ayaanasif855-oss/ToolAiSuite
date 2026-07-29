@@ -11,30 +11,24 @@ export async function ocrDocument(
 
   let worker: Awaited<ReturnType<typeof createWorker>> | null = null;
   try {
-    worker = await createWorker(language, 1, {
-      logger: (m) => {
-        if (m.status === 'recognizing text') {
-          const pct = Math.round((m.progress || 0) * 100);
-          onProgress?.(20 + Math.round(pct * 0.7), `OCR Recognizer: ${pct}% completed`);
-        } else if (m.status) {
-          onProgress?.(15, `Tesseract Engine: ${m.status}...`);
-        }
-      }
-    });
+    worker = await createWorker(language);
   } catch (err) {
     console.warn('Tesseract worker error, attempting fallback:', err);
   }
 
   let extractedText = '';
 
-  if (file.type.includes('pdf')) {
-    onProgress?.(15, 'Rendering PDF pages to canvas for optical recognition...');
+  if (file.type.includes('pdf') || file.name.toLowerCase().endsWith('.pdf')) {
+    onProgress?.(15, 'Rendering PDF pages for optical character recognition...');
     const arrayBuffer = await fileToArrayBuffer(file);
     const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     const numPages = pdfDoc.numPages;
 
     for (let i = 1; i <= numPages; i++) {
-      onProgress?.(20 + Math.round(((i - 1) / numPages) * 70), `Analyzing page ${i} of ${numPages}...`);
+      onProgress?.(
+        15 + Math.round(((i - 1) / numPages) * 75),
+        `Processing Page ${i} of ${numPages}...`
+      );
       const page = await pdfDoc.getPage(i);
       const viewport = page.getViewport({ scale: 2.0 });
 
@@ -42,41 +36,56 @@ export async function ocrDocument(
       canvas.width = viewport.width;
       canvas.height = viewport.height;
       const ctx = canvas.getContext('2d');
+
       if (ctx) {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         await page.render({ canvasContext: ctx, viewport, canvas } as any).promise;
+
         if (worker) {
-          const ret = await worker.recognize(canvas);
-          extractedText += `\n\n--- PAGE ${i} ---\n\n` + ret.data.text;
+          try {
+            const ret = await worker.recognize(canvas);
+            const pageText = ret.data.text.trim();
+            extractedText += (extractedText ? '\n\n' : '') + `--- Page ${i} ---\n` + (pageText || '[No text detected]');
+          } catch (e) {
+            console.warn(`OCR error on page ${i}:`, e);
+            const textContent = await page.getTextContent();
+            const pageStr = textContent.items.map((item) => ('str' in item ? item.str : '')).join(' ');
+            extractedText += (extractedText ? '\n\n' : '') + `--- Page ${i} ---\n` + (pageStr || '[No text extracted]');
+          }
         } else {
-          // Fallback if worker fails
           const textContent = await page.getTextContent();
           const pageStr = textContent.items.map((item) => ('str' in item ? item.str : '')).join(' ');
-          extractedText += `\n\n--- PAGE ${i} ---\n\n` + pageStr;
+          extractedText += (extractedText ? '\n\n' : '') + `--- Page ${i} ---\n` + (pageStr || '[No text extracted]');
         }
       }
     }
   } else {
-    // Image file
-    onProgress?.(25, 'Processing document image...');
+    onProgress?.(25, 'Processing document image for OCR...');
     if (worker) {
-      const ret = await worker.recognize(file);
-      extractedText = ret.data.text;
+      try {
+        const ret = await worker.recognize(file);
+        extractedText = ret.data.text.trim();
+      } catch (e) {
+        extractedText = 'Unable to run OCR on this image format.';
+      }
     } else {
-      extractedText = 'Unable to run OCR worker on image.';
+      extractedText = 'Unable to initialize Tesseract.js worker.';
     }
   }
 
   if (worker) {
-    await worker.terminate();
+    try {
+      await worker.terminate();
+    } catch (e) {}
   }
 
   if (!extractedText.trim()) {
     extractedText = 'No text detected or extracted from the uploaded document.';
   }
 
-  onProgress?.(95, 'Generating formatted output files (.docx & .txt)...');
+  onProgress?.(95, 'Generating output text and document files...');
 
-  // Generate .docx
   const docxParagraphs = extractedText.split('\n').map((line) => {
     return new Paragraph({
       children: [new TextRun({ text: line, size: 24 })],
@@ -100,3 +109,4 @@ export async function ocrDocument(
     fileName: `${baseName}_ocr_extracted`
   };
 }
+
