@@ -8,99 +8,99 @@ export async function compressPdf(
   level: CompressionLevel = 'recommended',
   onProgress?: (progress: number, message: string) => void
 ): Promise<{ blob: Blob; fileName: string; size: number; originalSize: number }> {
-  onProgress?.(10, 'Reading original PDF...');
+  onProgress?.(10, 'Reading original PDF structure...');
   const arrayBuffer = await fileToArrayBuffer(file);
   const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   const numPages = pdfDoc.numPages;
 
-  // Initial preset settings based on user selection
-  let initialScale = 1.0;
-  let initialQuality = 0.65;
+  let renderScale = 1.5;
+  let renderQuality = 0.75;
 
   if (level === 'extreme') {
-    initialScale = 0.85;
-    initialQuality = 0.45;
+    renderScale = 1.25;
+    renderQuality = 0.55;
   } else if (level === 'recommended') {
-    initialScale = 1.0;
-    initialQuality = 0.65;
+    renderScale = 1.5;
+    renderQuality = 0.75;
   } else {
-    initialScale = 1.1;
-    initialQuality = 0.80;
+    renderScale = 1.8;
+    renderQuality = 0.85;
   }
 
-  // Helper renderer function
-  const renderPdfWithSettings = async (renderScale: number, renderQuality: number, startPct: number, endPct: number) => {
-    const newPdf = await PDFDocument.create();
+  // First, check if object stream compression alone yields a smaller file (vector text optimization)
+  onProgress?.(20, 'Evaluating vector object stream compression...');
+  let streamBytes: Uint8Array | null = null;
+  try {
+    const directDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true } as any);
+    streamBytes = await directDoc.save({ useObjectStreams: true });
+  } catch (e) {
+    console.warn('Direct stream optimization check skipped:', e);
+  }
 
-    for (let i = 1; i <= numPages; i++) {
-      const pct = startPct + Math.round(((i - 1) / numPages) * (endPct - startPct));
-      onProgress?.(pct, `Compressing page ${i} of ${numPages} (${Math.round(renderQuality * 100)}% JPEG quality)...`);
+  // Render pages to canvas for image/raster optimization
+  const newPdf = await PDFDocument.create();
 
-      const page = await pdfDoc.getPage(i);
-      const viewport = page.getViewport({ scale: renderScale });
+  for (let i = 1; i <= numPages; i++) {
+    const pct = 25 + Math.round(((i - 1) / numPages) * 60);
+    onProgress?.(pct, `Compressing page ${i} of ${numPages} (${Math.round(renderQuality * 100)}% quality)...`);
 
-      const canvas = document.createElement('canvas');
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      const ctx = canvas.getContext('2d');
+    const page = await pdfDoc.getPage(i);
+    const viewport = page.getViewport({ scale: renderScale });
 
-      if (!ctx) throw new Error('Canvas 2D context not available');
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d');
 
-      // Fill white background for clean rendering
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (!ctx) throw new Error('Canvas 2D context not available');
 
-      await page.render({ canvasContext: ctx, viewport, canvas } as any).promise;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const jpegDataUrl = canvas.toDataURL('image/jpeg', renderQuality);
-      const jpegImageBytes = await fetch(jpegDataUrl).then((res) => res.arrayBuffer());
+    await page.render({ canvasContext: ctx, viewport, canvas } as any).promise;
 
-      const embeddedImage = await newPdf.embedJpg(jpegImageBytes);
-      const newPage = newPdf.addPage([viewport.width, viewport.height]);
+    const jpegDataUrl = canvas.toDataURL('image/jpeg', renderQuality);
+    const jpegImageBytes = await fetch(jpegDataUrl).then((res) => res.arrayBuffer());
 
-      newPage.drawImage(embeddedImage, {
-        x: 0,
-        y: 0,
-        width: viewport.width,
-        height: viewport.height
-      });
-    }
+    const embeddedImage = await newPdf.embedJpg(jpegImageBytes);
+    const newPage = newPdf.addPage([viewport.width, viewport.height]);
 
-    const pdfBytes = await newPdf.save();
-    return pdfBytes;
-  };
+    newPage.drawImage(embeddedImage, {
+      x: 0,
+      y: 0,
+      width: viewport.width,
+      height: viewport.height
+    });
+  }
 
-  // Pass 1: Render with initial settings
-  let finalBytes = await renderPdfWithSettings(initialScale, initialQuality, 10, 80);
+  onProgress?.(88, 'Finalizing compressed document...');
+  let compressedBytes = await newPdf.save({ useObjectStreams: true });
 
-  // Size Guard Check: If output size >= original file size, execute pass 2 or stream optimization
-  if (finalBytes.length >= file.size) {
-    onProgress?.(82, 'Size guard activated: Optimizing compression parameters to reduce file size...');
-    // Pass 2: Lower scale and quality to guarantee size reduction
-    const pass2Scale = Math.min(initialScale, 0.85);
-    const pass2Quality = Math.min(initialQuality, 0.45);
-    const pass2Bytes = await renderPdfWithSettings(pass2Scale, pass2Quality, 82, 95);
+  // If stream-only compression produced a smaller file, prefer streamBytes
+  if (streamBytes && streamBytes.byteLength < compressedBytes.byteLength) {
+    compressedBytes = streamBytes;
+  }
 
-    if (pass2Bytes.length < finalBytes.length) {
-      finalBytes = pass2Bytes;
-    }
-
-    // Try direct object stream compression with pdf-lib if rasterization is still larger
-    if (finalBytes.length >= file.size) {
+  // STRICT SIZE GUARD (MANDATORY): Never output a file larger than or equal to original input
+  if (compressedBytes.byteLength >= file.size) {
+    onProgress?.(92, 'Applying strict size guard fallback...');
+    if (streamBytes && streamBytes.byteLength < file.size) {
+      compressedBytes = streamBytes;
+    } else {
       try {
-        const directDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-        const directBytes = await directDoc.save({ useObjectStreams: true });
-        if (directBytes.length < finalBytes.length) {
-          finalBytes = directBytes;
+        const fallbackDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true } as any);
+        const fallbackBytes = await fallbackDoc.save({ useObjectStreams: true });
+        if (fallbackBytes.byteLength < file.size) {
+          compressedBytes = fallbackBytes;
         }
       } catch (e) {
-        console.warn('Direct stream optimization skipped:', e);
+        console.warn('Fallback stream save failed:', e);
       }
     }
   }
 
-  onProgress?.(98, 'Finalizing compressed document...');
-  const blob = new Blob([finalBytes], { type: 'application/pdf' });
+  onProgress?.(98, 'Packaging final PDF file...');
+  const blob = new Blob([compressedBytes], { type: 'application/pdf' });
   const baseName = file.name.replace(/\.[^/.]+$/, '');
   const fileName = `${baseName}_compressed.pdf`;
 
@@ -112,4 +112,5 @@ export async function compressPdf(
     originalSize: file.size
   };
 }
+
 

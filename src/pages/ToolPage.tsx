@@ -833,11 +833,11 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
 
 
                   {/* Extracted Text Inspector for Word / OCR */}
-                  {singleResult.text && (
+                  {singleResult.text !== undefined && (
                     <div className="mt-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                          Extracted Text Content Preview
+                          Extracted Text Content (Editable)
                         </span>
                         <button
                           onClick={() => copyExtractedText(singleResult.text!)}
@@ -848,10 +848,22 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
                         </button>
                       </div>
                       <textarea
-                        readOnly
                         value={singleResult.text}
-                        rows={5}
-                        className="w-full p-3 text-xs font-mono rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 resize-none focus:outline-none"
+                        onChange={(e) => {
+                          const newText = e.target.value;
+                          setSingleResult((prev) =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  text: newText,
+                                  txtBlob: new Blob([newText], { type: 'text/plain;charset=utf-8' })
+                                }
+                              : null
+                          );
+                        }}
+                        rows={6}
+                        className="w-full p-3 text-xs font-mono rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Extracted text will appear here..."
                       />
                     </div>
                   )}
