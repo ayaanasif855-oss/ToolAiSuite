@@ -1,5 +1,16 @@
 export type ToolCategory = 'pdf' | 'text' | 'utility';
 
+export interface HowToStep {
+  step: number;
+  title: string;
+  description: string;
+}
+
+export interface KeyFeature {
+  title: string;
+  description: string;
+}
+
 export interface ToolMeta {
   id: string;
   name: string;
@@ -16,6 +27,10 @@ export interface ToolMeta {
     howToSteps: string[];
     features: string[];
     useCases: string[];
+    whyChoose?: {
+      paragraph1: string;
+      paragraph2: string;
+    };
   };
   faqs: {
     question: string;

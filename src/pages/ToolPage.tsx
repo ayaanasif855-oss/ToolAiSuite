@@ -12,7 +12,11 @@ import {
   Check,
   Layers,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  ShieldCheck,
+  Zap,
+  FileCheck,
+  HelpCircle
 } from 'lucide-react';
 import { ToolMeta } from '../types';
 import { TOOLS_DATA } from '../data/tools';
@@ -942,87 +946,154 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
           )}
         </div>
 
-        {/* AdSense Unit Placeholder Below Workspace */}
+        {/* ================================================================= */}
+        {/* BOTTOM RICH PUBLISHER CONTENT SECTION (MANDATORY FOR ADSENSE)    */}
+        {/* ================================================================= */}
+
+        {/* SECTION 1: "How to Use [Tool Name] Online for Free" (4 Structured Step Cards) */}
+        <section className="my-14 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 shadow-sm">
+          <div className="max-w-3xl mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3">
+              <FileCheck className="w-3.5 h-3.5" />
+              <span>Step-by-Step Guide</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              How to Use {tool.name} Online for Free
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+              {tool.seoContent.intro}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {tool.seoContent.howToSteps.map((step, idx) => (
+              <div
+                key={idx}
+                className="relative bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 rounded-2xl p-6 flex flex-col justify-between hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group shadow-sm"
+              >
+                <div>
+                  <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white font-black text-sm flex items-center justify-center mb-4 shadow-sm group-hover:scale-105 transition-transform">
+                    0{idx + 1}
+                  </div>
+                  <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm sm:text-base mb-2">
+                    Step {idx + 1}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {step}
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-700/40 flex items-center text-xs font-medium text-indigo-600 dark:text-indigo-400">
+                  <span>100% In-Browser</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION 2: Key Features & High-Performance Capabilities */}
+        <section className="my-14 bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12">
+          <div className="max-w-3xl mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-3">
+              <Zap className="w-3.5 h-3.5" />
+              <span>Core Highlights</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              Key Features of {tool.name}
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400">
+              Designed with enterprise-grade security and client-side performance principles.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {tool.seoContent.features.map((feat, idx) => {
+              const parts = feat.split(':');
+              const title = parts.length > 1 ? parts[0] : `Feature 0${idx + 1}`;
+              const desc = parts.length > 1 ? parts.slice(1).join(':') : feat;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-2xl p-6 flex items-start gap-4 shadow-sm"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm sm:text-base mb-1">
+                      {title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {desc}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Practical Use Cases Grid */}
+          {tool.seoContent.useCases && tool.seoContent.useCases.length > 0 && (
+            <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">
+                Popular Practical Use Cases
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {tool.seoContent.useCases.map((uc, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 flex items-start gap-2.5"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0 mt-1.5" />
+                    <span>{uc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* AdSense Placement (Strictly placed below substantial publisher content) */}
         <AdSensePlaceholder format="responsive" />
 
-        {/* SEO INFORMATIONAL COPY */}
-        <article className="my-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 shadow-sm text-slate-700 dark:text-slate-300 space-y-6">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
-            {tool.seoContent.heading}
-          </h2>
-
-          <p className="text-sm sm:text-base leading-relaxed">
-            {tool.seoContent.intro}
-          </p>
-
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
-              Step-by-Step Guide: How to Use {tool.name}
-            </h3>
-            <ol className="list-decimal pl-5 space-y-2 text-xs sm:text-sm">
-              {tool.seoContent.howToSteps.map((step, idx) => (
-                <li key={idx} className="leading-relaxed">
-                  {step}
-                </li>
-              ))}
-            </ol>
+        {/* SECTION 3: Frequently Asked Questions (Accordion) */}
+        <section className="my-14 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 shadow-sm">
+          <div className="max-w-3xl mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3">
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Questions & Answers</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              Frequently Asked Questions
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400">
+              Common questions regarding privacy, file limits, compatibility, and output quality.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <div>
-              <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm mb-2">
-                Key Tool Capabilities
-              </h4>
-              <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
-                {tool.seoContent.features.map((feat, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm mb-2">
-                Common Practical Use Cases
-              </h4>
-              <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
-                {tool.seoContent.useCases.map((uc, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>{uc}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </article>
-
-        {/* Dedicated Tool FAQ Accordion */}
-        <section className="my-12 bg-slate-100/60 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-10">
-          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mb-6">
-            Frequently Asked Questions about {tool.name}
-          </h3>
-
-          <div className="space-y-3">
+          <div className="space-y-4">
             {tool.faqs.map((faq, idx) => {
               const isOpen = openFaqIndex === idx;
               return (
                 <div
                   key={idx}
-                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+                  className="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden transition-all bg-slate-50/50 dark:bg-slate-800/40"
                 >
                   <button
                     onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full flex items-center justify-between p-4 text-left font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-400"
+                    className="w-full flex items-center justify-between p-5 text-left font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                   >
-                    <span>{faq.question}</span>
-                    {isOpen ? <ChevronUp className="w-4 h-4 text-indigo-500" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                    <span className="pr-4">{faq.question}</span>
+                    <div className="w-7 h-7 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+                      {isOpen ? (
+                        <ChevronUp className="w-4 h-4 text-indigo-500" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                      )}
+                    </div>
                   </button>
 
                   {isOpen && (
-                    <div className="p-4 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 mt-1">
+                    <div className="p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-200/60 dark:border-slate-700/60 mt-1">
                       {faq.answer}
                     </div>
                   )}
@@ -1032,11 +1103,57 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
           </div>
         </section>
 
-        {/* Related Tools Section */}
-        <section className="my-12">
-          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mb-6">
-            Related PDF Tools
-          </h3>
+        {/* SECTION 4: "Why Choose ToolAISuite?" Editorial Section */}
+        <section className="my-14 bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 text-white rounded-3xl p-8 sm:p-12 shadow-lg border border-indigo-900/40">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-4 border border-indigo-400/20">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Privacy-First Architecture</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-6">
+              Why Choose ToolAISuite for {tool.name}?
+            </h2>
+
+            <div className="space-y-4 text-sm sm:text-base text-indigo-100/90 leading-relaxed">
+              <p>
+                {tool.seoContent.whyChoose?.paragraph1 ||
+                  `Unlike traditional cloud-based utility services that upload your confidential files to remote servers—exposing sensitive financial, legal, or personal data to potential breaches—ToolAISuite processes every byte locally within your browser sandbox. Utilizing advanced WebAssembly, your documents are parsed directly inside your device memory.`}
+              </p>
+              <p>
+                {tool.seoContent.whyChoose?.paragraph2 ||
+                  `This client-side architecture guarantees absolute data privacy, eliminates upload and download wait times, and complies naturally with HIPAA, GDPR, and CCPA standards. Enjoy unlimited operations, zero watermarks, and fast performance without registrations or fees.`}
+              </p>
+            </div>
+
+            <div className="mt-8 pt-8 border-t border-indigo-800/80 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-medium">
+              <div className="flex items-center gap-2 text-emerald-300">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>Zero Server Uploads & Storage</span>
+              </div>
+              <div className="flex items-center gap-2 text-indigo-200">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-300" />
+                <span>No Email or Account Signup</span>
+              </div>
+              <div className="flex items-center gap-2 text-indigo-200">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-300" />
+                <span>Unlimited Free Daily Usage</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 5: Related Tools Grid */}
+        <section className="my-14">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+                Explore Related Tools & Utilities
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                Discover more free in-browser file and text productivity utilities.
+              </p>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {relatedTools.map((relTool) => (
@@ -1048,6 +1165,9 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
             ))}
           </div>
         </section>
+
+        {/* Final Bottom Ad Container */}
+        <AdSensePlaceholder format="responsive" />
       </div>
     </div>
   );
