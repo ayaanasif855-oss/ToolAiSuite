@@ -1,6 +1,5 @@
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
-import { AdSensePlaceholder } from '../components/AdSensePlaceholder';
 
 export const DisclaimerPage: React.FC = () => {
   return (
@@ -32,8 +31,6 @@ export const DisclaimerPage: React.FC = () => {
             Because ToolAISuite is engineered entirely with client-side WebAssembly and HTML5 Canvas code, no documents are uploaded to our servers. However, users remain responsible for maintaining local device security (anti-virus, browser security) on their own computers or mobile devices.
           </p>
         </section>
-
-        <AdSensePlaceholder format="banner" />
 
         <section>
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">

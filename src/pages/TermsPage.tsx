@@ -1,6 +1,5 @@
 import React from 'react';
 import { ShieldCheck } from 'lucide-react';
-import { AdSensePlaceholder } from '../components/AdSensePlaceholder';
 
 export const TermsPage: React.FC = () => {
   return (
@@ -32,8 +31,6 @@ export const TermsPage: React.FC = () => {
             You retain 100% ownership, copyright, and intellectual property rights over all files, images, and documents processed using ToolAISuite. Because processing is executed exclusively inside your web browser, ToolAISuite claims zero rights or access to your documents.
           </p>
         </section>
-
-        <AdSensePlaceholder format="banner" />
 
         <section>
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">

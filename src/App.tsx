@@ -1,21 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { HomePage } from './pages/HomePage';
-import { AllToolsPage } from './pages/AllToolsPage';
-import { ToolPage } from './pages/ToolPage';
-import { AboutPage } from './pages/AboutPage';
-import { PrivacyPage } from './pages/PrivacyPage';
-import { TermsPage } from './pages/TermsPage';
-import { ContactPage } from './pages/ContactPage';
-import { DisclaimerPage } from './pages/DisclaimerPage';
-import { BlogListPage } from './pages/BlogListPage';
-import { BlogPostPage } from './pages/BlogPostPage';
 import { GlobalSearch } from './components/GlobalSearch';
+import { generateMetadata, injectJsonLd } from './utils/seo';
 import { TOOLS_DATA } from './data/tools';
 import { BLOG_POSTS } from './data/blog';
 import { Search, X } from 'lucide-react';
+
+// Lazy-loaded page components for bundle splitting and improved Core Web Vitals
+const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
+const AllToolsPage = lazy(() => import('./pages/AllToolsPage').then((m) => ({ default: m.AllToolsPage })));
+const ToolPage = lazy(() => import('./pages/ToolPage').then((m) => ({ default: m.ToolPage })));
+const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage').then((m) => ({ default: m.PrivacyPage })));
+const TermsPage = lazy(() => import('./pages/TermsPage').then((m) => ({ default: m.TermsPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then((m) => ({ default: m.ContactPage })));
+const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage').then((m) => ({ default: m.DisclaimerPage })));
+const BlogListPage = lazy(() => import('./pages/BlogListPage').then((m) => ({ default: m.BlogListPage })));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage').then((m) => ({ default: m.BlogPostPage })));
+
+const PageLoadingFallback = () => (
+  <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 space-y-3">
+    <div className="w-8 h-8 border-2 border-slate-300 dark:border-slate-700 border-t-indigo-600 dark:border-t-indigo-400 rounded-full animate-spin" />
+    <span className="text-xs font-medium text-slate-500 dark:text-slate-400 tracking-wide">
+      Loading...
+    </span>
+  </div>
+);
 
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<string>(() => {
@@ -27,6 +39,39 @@ export default function App() {
   });
 
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+
+  // Dynamic SEO metadata injection hook
+  useEffect(() => {
+    const meta = generateMetadata(currentRoute);
+    
+    // Update document title
+    document.title = meta.title;
+
+    // Helper to update or create meta tags
+    const updateMetaTag = (selector: string, attributeName: string, attributeValue: string, content: string) => {
+      let element = document.querySelector(selector);
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(attributeName, attributeValue);
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', content);
+    };
+
+    // Update standard description
+    updateMetaTag('meta[name="description"]', 'name', 'description', meta.description);
+
+    // Update OpenGraph tags
+    updateMetaTag('meta[property="og:title"]', 'property', 'og:title', meta.ogTitle || meta.title);
+    updateMetaTag('meta[property="og:description"]', 'property', 'og:description', meta.ogDescription || meta.description);
+
+    // Update Twitter Card tags
+    updateMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', meta.ogTitle || meta.title);
+    updateMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', meta.ogDescription || meta.description);
+
+    // Dynamic Schema.org JSON-LD structured data injection
+    injectJsonLd(currentRoute);
+  }, [currentRoute]);
 
   // Sync hash routing
   useEffect(() => {
@@ -124,7 +169,11 @@ export default function App() {
         />
 
         {/* Main Page Content */}
-        <main className="flex-grow">{renderContent()}</main>
+        <main className="flex-grow">
+          <Suspense fallback={<PageLoadingFallback />}>
+            {renderContent()}
+          </Suspense>
+        </main>
 
         {/* Global Search Modal Overlay */}
         {searchModalOpen && (

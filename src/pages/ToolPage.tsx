@@ -22,7 +22,6 @@ import { ToolMeta } from '../types';
 import { TOOLS_DATA } from '../data/tools';
 import { DragDropZone } from '../components/DragDropZone';
 import { ProgressBar } from '../components/ProgressBar';
-import { AdSensePlaceholder } from '../components/AdSensePlaceholder';
 import { TrustBanner } from '../components/TrustBanner';
 import { ToolCard } from '../components/ToolCard';
 import {
@@ -388,9 +387,6 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
             {tool.shortDesc}
           </p>
         </div>
-
-        {/* AdSense Unit Placeholder Above Workspace */}
-        <AdSensePlaceholder format="banner" />
 
         {/* MAIN TOOL WORKSPACE CONTAINER */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-xl shadow-slate-200/50 dark:shadow-none transition-all my-6">
@@ -1052,9 +1048,6 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
           )}
         </section>
 
-        {/* AdSense Placement (Strictly placed below substantial publisher content) */}
-        <AdSensePlaceholder format="responsive" />
-
         {/* SECTION 3: Frequently Asked Questions (Accordion) */}
         <section className="my-14 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 shadow-sm">
           <div className="max-w-3xl mb-8">
@@ -1104,17 +1097,17 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
         </section>
 
         {/* SECTION 4: "Why Choose ToolAISuite?" Editorial Section */}
-        <section className="my-14 bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 text-white rounded-3xl p-8 sm:p-12 shadow-lg border border-indigo-900/40">
+        <section className="my-14 bg-slate-900 text-slate-100 rounded-2xl p-8 sm:p-12 border border-slate-800 shadow-xs">
           <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-4 border border-indigo-400/20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-950/60 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-4 border border-emerald-800/40">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>Privacy-First Architecture</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-6">
               Why Choose ToolAISuite for {tool.name}?
             </h2>
 
-            <div className="space-y-4 text-sm sm:text-base text-indigo-100/90 leading-relaxed">
+            <div className="space-y-4 text-sm sm:text-base text-slate-300 leading-relaxed">
               <p>
                 {tool.seoContent.whyChoose?.paragraph1 ||
                   `Unlike traditional cloud-based utility services that upload your confidential files to remote servers—exposing sensitive financial, legal, or personal data to potential breaches—ToolAISuite processes every byte locally within your browser sandbox. Utilizing advanced WebAssembly, your documents are parsed directly inside your device memory.`}
@@ -1125,17 +1118,17 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
               </p>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-indigo-800/80 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-medium">
-              <div className="flex items-center gap-2 text-emerald-300">
+            <div className="mt-8 pt-8 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-medium">
+              <div className="flex items-center gap-2 text-emerald-400">
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
                 <span>Zero Server Uploads & Storage</span>
               </div>
-              <div className="flex items-center gap-2 text-indigo-200">
-                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-300" />
+              <div className="flex items-center gap-2 text-slate-300">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
                 <span>No Email or Account Signup</span>
               </div>
-              <div className="flex items-center gap-2 text-indigo-200">
-                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-300" />
+              <div className="flex items-center gap-2 text-slate-300">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
                 <span>Unlimited Free Daily Usage</span>
               </div>
             </div>
@@ -1165,9 +1158,6 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
             ))}
           </div>
         </section>
-
-        {/* Final Bottom Ad Container */}
-        <AdSensePlaceholder format="responsive" />
       </div>
     </div>
   );

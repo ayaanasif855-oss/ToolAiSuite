@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BookOpen, Search, ArrowRight, ShieldCheck, Clock } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blog';
-import { AdSensePlaceholder } from '../components/AdSensePlaceholder';
 
 interface BlogListPageProps {
   navigate: (route: string) => void;
@@ -45,19 +44,17 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ navigate }) => {
         </div>
       </div>
 
-      <AdSensePlaceholder format="responsive" />
-
       {/* Blog Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 my-10">
         {filteredPosts.map((post) => (
           <article
             key={post.id}
             onClick={() => navigate(`blog/${post.slug}`)}
-            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 hover:shadow-xl hover:border-emerald-500/40 transition-all cursor-pointer flex flex-col justify-between"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 hover:border-emerald-500/60 transition-colors cursor-pointer flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between text-xs text-slate-400 mb-4">
-                <span className="font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
                   {post.category}
                 </span>
                 <span className="flex items-center gap-1">
@@ -65,7 +62,7 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ navigate }) => {
                 </span>
               </div>
 
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-3">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-3">
                 {post.title}
               </h2>
 

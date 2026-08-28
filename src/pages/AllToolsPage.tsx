@@ -2,9 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { TOOLS_DATA } from '../data/tools';
 import { ToolCard } from '../components/ToolCard';
 import { TrustBanner } from '../components/TrustBanner';
-import { AdSensePlaceholder } from '../components/AdSensePlaceholder';
 import { ToolCategory } from '../types';
-import { Search, Grid, Layers, ShieldCheck, Sparkles } from 'lucide-react';
+import { Search, Grid, Layers, ShieldCheck, Zap } from 'lucide-react';
 
 interface AllToolsPageProps {
   navigate: (route: string) => void;
@@ -41,12 +40,12 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({ navigate }) => {
 
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-semibold uppercase tracking-wider">
             <Grid className="w-3.5 h-3.5" />
             <span>Complete Suite Directory</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
             All Free Online PDF & Utility Tools
           </h1>
 
@@ -62,7 +61,7 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({ navigate }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search tools by name, action or category (e.g. merge, compress, QR)..."
-              className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+              className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs"
             />
             {searchQuery && (
               <button
@@ -83,9 +82,9 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({ navigate }) => {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
                   isSelected
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+                    ? 'bg-indigo-600 text-white shadow-xs'
                     : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
@@ -94,9 +93,6 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({ navigate }) => {
             );
           })}
         </div>
-
-        {/* AdSense Unit */}
-        <AdSensePlaceholder format="banner" />
 
         {/* Tools Grid */}
         <div>
@@ -138,12 +134,9 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({ navigate }) => {
           )}
         </div>
 
-        {/* AdSense Unit Below Grid */}
-        <AdSensePlaceholder format="responsive" />
-
         {/* Informational SEO Content Section */}
-        <article className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 shadow-sm space-y-6 text-slate-700 dark:text-slate-300">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+        <article className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 sm:p-12 shadow-xs space-y-6 text-slate-700 dark:text-slate-300">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
             Why Use ToolAISuite Client-Side Web Utilities?
           </h2>
           <p className="text-sm sm:text-base leading-relaxed">
@@ -151,32 +144,32 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({ navigate }) => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-2">
-              <ShieldCheck className="w-6 h-6 text-emerald-500" />
+            <div className="p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-2">
+              <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm">
-                100% Guaranteed Privacy
+                100% In-Browser Privacy
               </h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Your documents never leave your computer or phone. Processing occurs exclusively in client RAM.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-2">
-              <Sparkles className="w-6 h-6 text-indigo-500" />
+            <div className="p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-2">
+              <Zap className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm">
-                Lightning Fast Speed
+                Instant Local Execution
               </h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 No waiting for upload or download queues. Files convert instantly regardless of internet latency.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-2">
-              <Layers className="w-6 h-6 text-purple-500" />
+            <div className="p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-2">
+              <Layers className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm">
                 Batch & Offline Capable
               </h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Process multiple documents at once and keep working even without an active internet connection.
               </p>
             </div>

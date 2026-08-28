@@ -9,7 +9,6 @@ import {
   FileText,
   ArrowRight,
   Search,
-  Sparkles,
   ServerOff
 } from 'lucide-react';
 import { TOOLS_DATA } from '../data/tools';
@@ -17,7 +16,6 @@ import { BLOG_POSTS } from '../data/blog';
 import { GLOBAL_FAQS } from '../data/faqs';
 import { ToolCard } from '../components/ToolCard';
 import { TrustBanner } from '../components/TrustBanner';
-import { AdSensePlaceholder } from '../components/AdSensePlaceholder';
 import { GlobalSearch } from '../components/GlobalSearch';
 import { ToolCategory } from '../types';
 
@@ -39,20 +37,20 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
       <TrustBanner />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-12 sm:py-20 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-400 text-xs sm:text-sm font-semibold mb-6">
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              <span>100% In-Browser Privacy • Zero File Server Uploads</span>
+      <section className="py-12 sm:py-16 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center flex flex-col items-center justify-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-6">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>100% Client-Side Privacy • Zero Server Uploads</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">
               Browser-Based Document Toolkit
             </h1>
 
-            <p className="mt-4 text-base sm:text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
-              Professional PDF tools that run entirely in your browser. No files are ever uploaded to our servers.
+            <p className="mt-4 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
+              Professional PDF and text utilities running entirely inside your local browser memory using WebAssembly and typed binary arrays. No files are transmitted to external servers.
             </p>
 
             {/* Global Tool Search Bar */}
@@ -63,26 +61,21 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
             {/* Tech Badges */}
             <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-emerald-500" />
+                <Lock className="w-4 h-4 text-slate-500" />
                 <span>Zero Server Transmission</span>
               </div>
               <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-indigo-500" />
+                <Zap className="w-4 h-4 text-slate-500" />
                 <span>WebAssembly Speed</span>
               </div>
               <div className="flex items-center gap-2">
-                <ServerOff className="w-4 h-4 text-emerald-500" />
+                <ServerOff className="w-4 h-4 text-slate-500" />
                 <span>Works Offline</span>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* AdSense Unit Placeholder Top */}
-      <div className="max-w-7xl mx-auto px-4">
-        <AdSensePlaceholder format="responsive" />
-      </div>
 
       {/* Tools Showcase Section */}
       <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -246,11 +239,6 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
           ))}
         </div>
       </section>
-
-      {/* AdSense Unit Placeholder Bottom */}
-      <div className="max-w-7xl mx-auto px-4">
-        <AdSensePlaceholder format="responsive" />
-      </div>
 
       {/* Global FAQ Section */}
       <section className="py-16 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800">

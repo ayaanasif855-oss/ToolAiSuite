@@ -6,7 +6,7 @@ import {
   X,
   Search,
   ShieldCheck,
-  Sparkles,
+  ArrowRight,
   BookOpen,
   Info,
   Mail,
@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate, openSear
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+    <header className="sticky top-0 z-40 w-full bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-18">
           {/* Logo */}
@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate, openSear
             }}
             className="flex items-center gap-2.5 cursor-pointer group shrink-0"
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-sm group-hover:bg-indigo-700 transition-colors">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-xs group-hover:bg-indigo-700 transition-colors">
               <FileText className="w-5 h-5" />
             </div>
             <div>
@@ -60,17 +60,17 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate, openSear
             </div>
           </div>
 
-          {/* Privacy Badge (Central focus for trust) */}
-          <div className="hidden lg:flex items-center gap-2 px-4 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 rounded-full">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-emerald-700 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-              100% Secure & Private: No Server Uploads
+          {/* Privacy Badge */}
+          <div className="hidden lg:flex items-center gap-2 px-3.5 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 rounded-lg">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-emerald-800 dark:text-emerald-300 text-xs font-semibold tracking-wide">
+              100% In-Browser Privacy • Zero Server Uploads
             </span>
           </div>
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-2">
-            {/* Mega Dropdown for Tools */}
+            {/* Dropdown for Tools */}
             <div className="relative">
               <button
                 onClick={() => {
@@ -92,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate, openSear
               {toolsDropdownOpen && (
                 <div
                   onMouseLeave={() => setToolsDropdownOpen(false)}
-                  className="absolute top-full left-0 mt-2 w-[580px] max-h-[75vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+                  className="absolute top-full left-0 mt-2 w-[580px] max-h-[75vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
                 >
                   <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
                     <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
@@ -105,7 +105,8 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate, openSear
                       }}
                       className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
                     >
-                      <Sparkles className="w-3.5 h-3.5" /> View All Tools Page →
+                      <span>View All Tools Page</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
 

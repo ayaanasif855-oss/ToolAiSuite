@@ -78,22 +78,22 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between"
+      className="group bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors duration-150 cursor-pointer flex flex-col justify-between"
       id={`tool-card-${tool.id}`}
     >
       <div>
         <div className="flex items-center justify-between mb-4">
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform ${badgeColors}`}>
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${badgeColors}`}>
             <IconComponent className="w-5 h-5" />
           </div>
 
           <div className="flex items-center gap-1.5">
             {tool.badge && (
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                 {tool.badge}
               </span>
             )}
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800">
               {tool.category}
             </span>
           </div>
@@ -103,16 +103,16 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, onClick }) => {
           {tool.name}
         </h3>
 
-        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
           {tool.shortDesc}
         </p>
       </div>
 
       <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-        <span className="flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+        <span className="flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
           <ShieldCheck className="w-3.5 h-3.5" /> 100% In-Browser
         </span>
-        <span className="flex items-center gap-1 font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all">
+        <span className="flex items-center gap-1 font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
           Open <ArrowRight className="w-3.5 h-3.5" />
         </span>
       </div>
