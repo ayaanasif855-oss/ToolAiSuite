@@ -13,6 +13,7 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { Logo } from './Logo';
 import { TOOLS_DATA } from '../data/tools';
 import { ToolCategory } from '../types';
 
@@ -48,16 +49,9 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate, openSear
               navigate('home');
               setMobileMenuOpen(false);
             }}
-            className="flex items-center gap-2.5 cursor-pointer group shrink-0"
+            className="cursor-pointer group shrink-0"
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-xs group-hover:bg-indigo-700 transition-colors">
-              <FileText className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-                ToolAI<span className="text-indigo-600 dark:text-indigo-400">Suite</span>
-              </span>
-            </div>
+            <Logo size="md" />
           </div>
 
           {/* Privacy Badge */}

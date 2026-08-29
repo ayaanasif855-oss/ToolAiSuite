@@ -1,5 +1,6 @@
 import React from 'react';
-import { FileText, ShieldCheck, Cpu, Lock, Heart } from 'lucide-react';
+import { ShieldCheck, Cpu, Lock } from 'lucide-react';
+import { Logo } from './Logo';
 import { TOOLS_DATA } from '../data/tools';
 
 interface FooterProps {
@@ -15,14 +16,9 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
           <div className="lg:col-span-2 space-y-4">
             <div
               onClick={() => navigate('home')}
-              className="flex items-center gap-2.5 cursor-pointer group"
+              className="cursor-pointer group inline-block"
             >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
-                <FileText className="w-5 h-5" />
-              </div>
-              <span className="text-xl font-bold text-white tracking-tight">
-                ToolAI<span className="text-indigo-400">Suite</span>
-              </span>
+              <Logo size="md" />
             </div>
 
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
