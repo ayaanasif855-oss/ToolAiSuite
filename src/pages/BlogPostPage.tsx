@@ -165,7 +165,11 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, navigate }) =>
 
       {/* Main Content Body */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 shadow-sm my-8 max-w-none space-y-6">
-        {post.content.split('\n\n').map((paragraph, idx) => renderParagraph(paragraph, idx))}
+        {post.content.split('\n\n').map((paragraph, idx) => (
+          <React.Fragment key={idx}>
+            {renderParagraph(paragraph, idx)}
+          </React.Fragment>
+        ))}
       </div>
 
       {/* Related Tools Box */}
