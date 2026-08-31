@@ -1110,7 +1110,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, navigate }) => {
             <div className="space-y-4 text-sm sm:text-base text-slate-300 leading-relaxed">
               <p>
                 {tool.seoContent.whyChoose?.paragraph1 ||
-                  `Unlike traditional cloud-based utility services that upload your confidential files to remote servers—exposing sensitive financial, legal, or personal data to potential breaches—ToolAISuite processes every byte locally within your browser sandbox. Utilizing advanced WebAssembly, your documents are parsed directly inside your device memory.`}
+                  `Unlike traditional cloud-based utility services that upload your confidential files to remote servers (exposing sensitive financial, legal, or personal data to potential breaches), ToolAISuite processes every byte locally within your browser sandbox. Utilizing advanced WebAssembly, your documents are parsed directly inside your device memory.`}
               </p>
               <p>
                 {tool.seoContent.whyChoose?.paragraph2 ||

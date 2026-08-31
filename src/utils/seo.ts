@@ -18,9 +18,9 @@ export function generateMetadata(route: string): RouteMetadata {
     const tool = TOOLS_DATA.find((t) => t.slug === slug || t.id === slug);
     if (tool) {
       return {
-        title: `${tool.name} – 100% Free & Private Online Tool | ToolAISuite`,
+        title: `${tool.name} - 100% Free & Private Online Tool | ToolAISuite`,
         description: `${tool.seoDescription || tool.shortDesc} Fast, secure, client-side in-browser processing with zero server uploads and no limits.`,
-        ogTitle: `${tool.name} – Free Online Document Utility`,
+        ogTitle: `${tool.name} - Free Online Document Utility`,
         ogDescription: `Use ${tool.name} directly in your web browser. 100% confidential and safe with WebAssembly zero-upload technology.`
       };
     }
@@ -43,9 +43,9 @@ export function generateMetadata(route: string): RouteMetadata {
     case 'tools':
     case 'all-tools':
       return {
-        title: 'All Free PDF & Document Tools – 100% Client-Side | ToolAISuite',
+        title: 'All Free PDF & Document Tools - 100% Client-Side | ToolAISuite',
         description: 'Explore our complete suite of free, private, and client-side PDF utilities. Merge, split, compress, unlock, and convert documents instantly in your browser.',
-        ogTitle: 'All Free PDF & Document Tools – ToolAISuite',
+        ogTitle: 'All Free PDF & Document Tools - ToolAISuite',
         ogDescription: '100% client-side PDF converter suite with zero server uploads and no file limits.'
       };
     case 'blog':
@@ -57,14 +57,14 @@ export function generateMetadata(route: string): RouteMetadata {
       };
     case 'about':
       return {
-        title: 'About ToolAISuite – 100% Client-Side Document Sovereignty',
+        title: 'About ToolAISuite - 100% Client-Side Document Sovereignty',
         description: 'Learn about ToolAISuite’s mission to provide secure, in-browser PDF utilities powered by WebAssembly and zero server uploads.',
         ogTitle: 'About ToolAISuite & In-Browser Processing',
         ogDescription: 'How ToolAISuite protects document privacy using modern browser technologies.'
       };
     case 'privacy':
       return {
-        title: 'Privacy Policy – Zero File Storage Guarantee | ToolAISuite',
+        title: 'Privacy Policy - Zero File Storage Guarantee | ToolAISuite',
         description: 'Read ToolAISuite’s GDPR and CCPA compliant Privacy Policy. We never upload, store, or inspect your documents on remote servers.',
         ogTitle: 'ToolAISuite Privacy Policy',
         ogDescription: 'Zero server uploads and total user document sovereignty guaranteed.'
@@ -73,7 +73,7 @@ export function generateMetadata(route: string): RouteMetadata {
       return {
         title: 'Terms of Service | ToolAISuite',
         description: 'Review the terms and conditions for using ToolAISuite’s client-side document utilities and web services.',
-        ogTitle: 'Terms of Service – ToolAISuite',
+        ogTitle: 'Terms of Service - ToolAISuite',
         ogDescription: 'Terms and conditions for using ToolAISuite free browser utilities.'
       };
     case 'contact':
@@ -87,7 +87,7 @@ export function generateMetadata(route: string): RouteMetadata {
       return {
         title: 'Legal Disclaimer | ToolAISuite',
         description: 'Review our legal disclaimers regarding client-side processing, file security, and service availability.',
-        ogTitle: 'Legal Disclaimer – ToolAISuite',
+        ogTitle: 'Legal Disclaimer - ToolAISuite',
         ogDescription: 'Legal notice and terms of use for ToolAISuite web services.'
       };
     case 'home':

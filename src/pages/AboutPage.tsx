@@ -33,13 +33,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ navigate }) => {
           </h2>
           <div className="space-y-4 text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-400">
             <p>
-              In today's digital workflow, PDF documents are the bedrock of commerce, law, medicine, and academia. Millions of users routinely work with tax filings, non-disclosure agreements, hospital charts, and bank records. Yet, when faced with standard tasks—such as combining two invoices, removing a password, or compressing a file for an email attachment—most users are forced to upload these sensitive files to free online converter websites.
+              In modern digital workflows, PDF documents are central to commerce, legal agreements, healthcare, and education. People routinely handle tax filings, contracts, medical records, and bank statements. Yet, when faced with standard tasks like combining invoices, removing a password, or compressing a file for an email attachment, most users are forced to upload these sensitive files to online converter websites.
             </p>
             <p>
-              The dirty secret of legacy online PDF tools is their backend dependence: every uploaded file is transmitted over the internet, saved onto external cloud server disks, processed by server-side scripts, and held in remote storage queues. Even when services promise automated file deletion, the temporary exposure window violates strict institutional standards (such as HIPAA, GDPR, and CCPA) and exposes private data to intercept risks.
+              Many online PDF tools depend on backend servers. Files are uploaded across the internet, stored on remote disks, processed in cloud queues, and retained until automated scripts delete them. Even when services promise timely deletion, sending private files over the network exposes personal data to interception, server vulnerabilities, and compliance concerns under regulations like HIPAA, GDPR, and CCPA.
             </p>
             <p>
-              <strong>ToolAISuite was engineered to solve this privacy paradox.</strong> By moving the entire document manipulation pipeline into the user's local web browser via WebAssembly (Wasm) and typed binary array manipulation, we eliminated remote server dependencies entirely. Your documents never touch any server disk—because our architecture physically has no backend conversion server.
+              <strong>ToolAISuite was built to solve this privacy challenge.</strong> By moving the entire document processing pipeline into your local web browser via WebAssembly and typed binary arrays, we eliminated remote server dependencies entirely. Your documents never touch any server disk because our architecture runs entirely inside your browser tab.
             </p>
           </div>
         </section>

@@ -11,7 +11,7 @@ export const GLOBAL_FAQS: FAQItem[] = [
   },
   {
     question: 'Can I use ToolAISuite offline or in Airplane Mode?',
-    answer: 'Yes! Once the ToolAISuite web application is loaded in your browser tab, all 10 tools function completely offline without requiring active internet connectivity.'
+    answer: 'Yes! Once the ToolAISuite web application is loaded in your browser tab, all tools function completely offline without requiring active internet connectivity.'
   },
   {
     question: 'Are there file size limits or usage fees?',

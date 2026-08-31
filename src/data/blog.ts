@@ -38,11 +38,11 @@ Because web browsers historically lacked the computational capacity to manipulat
 During execution, web servers automatically log HTTP request headers, IP addresses, user agent strings, and often document filenames and query parameters. Even if the raw PDF file is eventually scheduled for deletion, metadata logs persist indefinitely in administrative monitoring dashboards.
 
 ### 4. Third-Party Exposure and Multi-Tenant Risks
-Multi-tenant virtual servers run alongside hundreds of independent customer processes. If a remote code execution (RCE) vulnerability exists in the underlying C/C++ parsing library (a frequent occurrence in legacy Ghostscript packages), an attacker could gain root access to the entire host and scrape all active document buffers in memory.
+Multi-tenant virtual servers run alongside hundreds of independent customer processes. If a remote code execution vulnerability exists in the underlying parsing library, an attacker could gain access to the host and scrape active document buffers in memory.
 
 ## The Paradigm Shift: 100% Client-Side WebAssembly Processing
 
-ToolAISuite was engineered from the ground up to eliminate the server vulnerability footprint entirely. Thanks to modern web capabilities—including the HTML5 File API, WebAssembly (Wasm), typed binary arrays (Uint8Array), and client-side JavaScript PDF parsing libraries like \`pdf-lib\`—your browser functions as an isolated, high-performance desktop sandbox.
+ToolAISuite was built to eliminate the server vulnerability footprint entirely. Thanks to modern web capabilities (such as the HTML5 File API, WebAssembly, typed binary arrays, and client-side JavaScript PDF parsing libraries like \`pdf-lib\`), your browser functions as an isolated, high-performance local sandbox.
 
 ### How Client-Side Execution Operates:
 1. **Local Memory Allocation:** When you drag a file into ToolAISuite, your browser reads the binary stream directly into volatile local RAM memory via \`FileReader.readAsArrayBuffer()\`.
@@ -126,9 +126,9 @@ The optimized image streams are passed to \`pdf-lib\`, which compiles a pristine
 
 | Compression Preset | DPI Target | Quality Factor | Average Size Reduction | Recommended Use Case |
 | :--- | :--- | :--- | :--- | :--- |
-| **Low Compression** | 200 DPI | 85% | 25% – 40% | High-detail graphic portfolios, photography portfolios |
-| **Recommended** | 150 DPI | 70% | 50% – 75% | Business proposals, court filings, school assignments |
-| **Extreme Compression** | 96 DPI | 50% | 75% – 90% | Urgent email attachments, multi-hundred page text scans |
+| **Low Compression** | 200 DPI | 85% | 25% to 40% | High-detail graphic portfolios, photography portfolios |
+| **Recommended** | 150 DPI | 70% | 50% to 75% | Business proposals, court filings, school assignments |
+| **Extreme Compression** | 96 DPI | 50% | 75% to 90% | Urgent email attachments, multi-hundred page text scans |
 
 ## Best Practices for Maintaining Quality
 
@@ -255,8 +255,8 @@ Using the high-performance client-side \`docx\` library, the synthesized structu
 
 It is vital to distinguish between the two primary categories of PDF documents:
 
-- **Native Digital PDFs:** Created by exporting directly from software like Microsoft Word, Google Docs, InDesign, or web browsers. These files contain true vector glyph streams and convert into editable Word files with pristine clarity and instant speed.
-- **Scanned Image PDFs:** Created when physical paper is digitized using an office photocopier or smartphone camera app. These files contain no selectable text characters—only a flat picture of words. To convert scanned PDFs to Word, use **ToolAISuite OCR PDF** first to extract characters via optical recognition.
+- **Native Digital PDFs:** Created by exporting directly from software like Microsoft Word, Google Docs, InDesign, or web browsers. These files contain true vector glyph streams and convert into editable Word files with clean formatting and fast speed.
+- **Scanned Image PDFs:** Created when physical paper is digitized using an office scanner or smartphone camera. These files contain no selectable text characters, only a flat bitmap image of words. To convert scanned PDFs to Word, use **ToolAISuite OCR PDF** first to extract characters via optical recognition.
 
 ## Step-by-Step Guide: Converting PDFs Safely in Your Browser
 
@@ -286,7 +286,7 @@ It is vital to distinguish between the two primary categories of PDF documents:
 
 Password-protected PDF files are standard practice in banking, corporate governance, healthcare, and tax preparation. When your bank emails you a monthly financial statement or an insurance carrier sends your policy documents, they are typically locked behind cryptographic password algorithms.
 
-However, many users frequently encounter situations where legitimate passwords must be stripped—such as when archiving historical tax returns into an internal folder, consolidating multiple password-protected invoices into a single master PDF, or removing printing restrictions from corporate guidelines.
+However, many users frequently encounter situations where legitimate passwords must be stripped, such as when archiving historical tax returns into an internal folder, consolidating multiple password-protected invoices into a single master PDF, or removing printing restrictions from corporate guidelines.
 
 ## The Two Distinct Types of PDF Passwords
 
@@ -305,13 +305,13 @@ The Owner Password does not encrypt the underlying text data; instead, it sets c
 
 Over the decades, PDF encryption standards have evolved significantly:
 
-### Legacy 40-bit and 128-bit RC4 (PDF 1.1 – 1.4)
+### Legacy 40-bit and 128-bit RC4 (PDF 1.1 to 1.4)
 Early PDF specifications utilized the stream cipher RC4. Due to weak key scheduling and known collision vulnerabilities, 40-bit encryption can be cracked in minutes using modern hardware.
 
-### AES-128 (PDF 1.5 – 1.6)
+### AES-128 (PDF 1.5 to 1.6)
 Introduced Advanced Encryption Standard (AES) in Cipher Block Chaining (CBC) mode with MD5/SHA-1 password hashing.
 
-### AES-256 (PDF 1.7 Extension Level 3 & PDF 2.0)
+### AES-256 (PDF 1.7 Extension Level 3 and PDF 2.0)
 The modern industry benchmark. Utilizes 256-bit AES encryption with SHA-256 hashing, HMAC authentication, and iterative PBKDF2 key derivation. Breaking an AES-256 document without the decryption password would take billions of years with modern supercomputers.
 
 ## How Client-Side Browser Decryption and Unlocking Works
@@ -355,7 +355,7 @@ When converting a PDF page to a bitmap image in the browser, the client engine p
 
 ### 1. Viewport Matrix Calculation & Scale Multiplication
 In standard PDF coordinate space, one typographical point corresponds to 1/72nd of an inch. If rendered at standard 1.0x scale on a modern display, text elements appear pixelated and unsharp.
-ToolAISuite applies a **2.0x Retina scaling matrix** (\`scale = 2.0\`), effectively doubling pixel density to 144–150 DPI. This ensures that fine typography, intricate CAD schematics, and vector chart elements retain crisp legibility.
+ToolAISuite applies a **2.0x Retina scaling matrix** (\`scale = 2.0\`), effectively doubling pixel density to 144 to 150 DPI. This ensures that fine typography, intricate CAD schematics, and vector chart elements retain crisp legibility.
 
 ### 2. Sub-Pixel Font Anti-Aliasing and Glyph Hinting
 Font descriptors embedded within the PDF page stream are rendered using HTML5 2D Canvas context rendering pipelines. The browser's native hardware-accelerated rasterizer calculates sub-pixel alpha gradients along glyph contours, preventing color fringing and ragged edges.
@@ -419,7 +419,7 @@ If both merged documents share standard system fonts (such as Helvetica or Times
 | Feature | ToolAISuite Client-Side | Legacy Cloud Converters |
 | :--- | :--- | :--- |
 | **Data Privacy** | 100% In-Browser RAM (Zero Uploads) | Uploaded to Remote Server Disks |
-| **File Size Limits** | Unlimited (Device RAM Bound) | Capped at 10MB–25MB Paywalls |
+| **File Size Limits** | Unlimited (Device RAM Bound) | Capped at 10MB to 25MB Paywalls |
 | **Processing Speed** | Instantaneous Local Execution | Network Upload + Server Queue Delays |
 | **Compliance** | Automatic HIPAA, GDPR, CCPA | Requires Complex BAA Agreements |
 | **Cost** | 100% Free Forever | Monthly Subscription Tiers |

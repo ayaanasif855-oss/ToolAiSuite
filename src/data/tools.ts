@@ -34,7 +34,7 @@ export const TOOLS_DATA: ToolMeta[] = [
         'Compiling multi-part legal briefs into an organized court filing.'
       ],
       whyChoose: {
-        paragraph1: 'Unlike conventional cloud-based PDF mergers that upload your confidential files to remote servers—exposing sensitive financial, legal, or personal data to potential data breaches—ToolAISuite processes every byte locally within your browser sandbox. Utilizing advanced WebAssembly and HTML5 File APIs, our engine compiles your PDF pages directly inside your computer or mobile device memory.',
+        paragraph1: 'Unlike conventional cloud-based PDF mergers that upload your confidential files to remote servers (exposing sensitive financial, legal, or personal data to potential data breaches), ToolAISuite processes every byte locally within your browser sandbox. Utilizing advanced WebAssembly and HTML5 File APIs, our engine compiles your PDF pages directly inside your computer or mobile device memory.',
         paragraph2: 'This client-side architecture guarantees absolute data sovereignty, eliminates upload and download bottlenecks, and ensures compliance with strict regulatory frameworks like HIPAA, GDPR, and CCPA. Enjoy unlimited merges, zero watermarks, and lightning-fast performance without creating an account or paying subscription fees.'
       }
     },
@@ -254,7 +254,7 @@ export const TOOLS_DATA: ToolMeta[] = [
         'Inserting PDF document pages into PowerPoint and Keynote presentations.'
       ],
       whyChoose: {
-        paragraph1: 'Converting confidential PDF documents—such as contracts, medical forms, or proprietary slides—into image files requires absolute privacy. ToolAISuite PDF to JPG leverages PDF.js and HTML5 Canvas rendering to convert vector page objects directly into pixel bitmaps in your device memory.',
+        paragraph1: 'Converting confidential PDF documents (such as contracts, medical forms, or proprietary slides) into image files requires absolute privacy. ToolAISuite PDF to JPG leverages PDF.js and HTML5 Canvas rendering to convert vector page objects directly into pixel bitmaps in your device memory.',
         paragraph2: 'With instantaneous rendering speeds and automatic batch ZIP packaging, you can convert multi-page documents to high-resolution JPGs in seconds without waiting for remote server queues or risking document leaks.'
       }
     },
@@ -642,7 +642,7 @@ export const TOOLS_DATA: ToolMeta[] = [
       ],
       whyChoose: {
         paragraph1: 'Formatting text case across hundreds of lines manually is time-consuming and error-prone. ToolAISuite Case Converter applies smart regex and string transformations directly in your browser memory with zero latency.',
-        paragraph2: 'With support for 10 distinct capitalization models—from editorial Title Case to developer-friendly camelCase and slug-case—you can format any text instantly without registration, advertisements in the editor, or server uploads.'
+        paragraph2: 'With support for 10 distinct capitalization models, from editorial Title Case to developer-friendly camelCase and slug-case, you can format any text instantly without registration, advertisements in the editor, or server uploads.'
       }
     },
     faqs: [
